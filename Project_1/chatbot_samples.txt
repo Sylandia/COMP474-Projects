@@ -1,0 +1,87 @@
+User: What is greet in Java?
+Chatbot: I'm sorry, I didn't understand that. Could you rephrase?
+
+User: What is bye in Java?
+Chatbot: I'm sorry, I didn't understand that. Could you rephrase?
+
+User: What is help in Java?
+Chatbot: I'm sorry, I didn't understand that. Could you rephrase?
+
+User: What is default in Java?
+Chatbot: I'm sorry, I didn't understand that. Could you rephrase?
+
+User: What is for in Java?
+Chatbot: A for loop is a control flow statement for specifying iteration. It allows code to be executed repeatedly.
+
+User: What is while in Java?
+Chatbot: A while loop executes a block of code as long as a specified condition is true.
+
+User: What is if in Java?
+Chatbot: An if statement allows conditional execution of a block of code based on a boolean expression.
+
+User: What is else in Java?
+Chatbot: An else statement provides an alternative execution path if the if condition is false.
+
+User: What is switch in Java?
+Chatbot: A switch statement allows a variable to be tested for equality against multiple cases.
+
+User: What is case in Java?
+Chatbot: A case inside a switch statement defines a branch to be executed when the value matches.
+
+User: What is break in Java?
+Chatbot: A break statement terminates the nearest enclosing loop or switch statement.
+
+User: What is continue in Java?
+Chatbot: A continue statement skips the current iteration of a loop and proceeds with the next iteration.
+
+User: What is return in Java?
+Chatbot: A return statement exits from a function and optionally returns a value.
+
+User: What is public in Java?
+Chatbot: Public is an access modifier that allows a member to be accessible from any class.
+
+User: What is private in Java?
+Chatbot: Private is an access modifier that restricts access to the defining class only.
+
+User: What is protected in Java?
+Chatbot: Protected allows access within the same package and by subclasses.
+
+User: What is static in Java?
+Chatbot: A static keyword defines a class-level variable or method that does not require an instance.
+
+User: What is final in Java?
+Chatbot: Final prevents modification of a variable, method, or class once assigned.
+
+User: What is abstract in Java?
+Chatbot: Abstract defines a class that cannot be instantiated and may contain abstract methods.
+
+User: What is interface in Java?
+Chatbot: An interface in Java is a blueprint for a class that defines abstract methods.
+
+User: What is extends in Java?
+Chatbot: Extends is used to inherit from a superclass.
+
+User: What is implements in Java?
+Chatbot: Implements is used by a class to implement an interface.
+
+User: What is instanceof in Java?
+Chatbot: Instanceof is used to check if an object is an instance of a class.
+
+User: What is super in Java?
+Chatbot: Super refers to the immediate parent class of a subclass.
+
+User: What is this in Java?
+Chatbot: This is a reference to the current object within an instance method.
+
+User: What is try in Java?
+Chatbot: Try is used to define a block of code that will be tested for exceptions.
+
+User: What is catch in Java?
+Chatbot: Catch defines a block of code to handle exceptions thrown by a try block.
+
+User: What is finally in Java?
+Chatbot: Finally defines a block of code that is always executed after a try-catch block, regardless of exceptions.
+
+User: What is throw in Java?
+Chatbot: Throw is used to explicitly throw an exception.
+
