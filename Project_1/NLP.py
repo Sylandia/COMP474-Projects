@@ -1,30 +1,16 @@
 import spacy
-from spacy.matcher import Matcher
+from spacy.matcher import PhraseMatcher, Matcher
 
+
+#### INITIALIZATION ####
 # Load the model 
 nlp = spacy.load("en_core_web_sm")
 
-# Initialize the matcher
-# matcher = Matcher(nlp.vocab) 
-# response_dict = {
-#     # Generic responses 
-#     "greet": "Hello! How can I help you today?",
-#     "bye": "Goodbye! Have a great day!",
-#     "help": "I can answer your questions. Try asking about something more specific!",
-#     "default": "I'm sorry, I didn't understand that. Could you rephrase?",
-#     # Java Keyword/Statement responses 
-#     "for": "A for loop is a loop that allows you to iterate over a sequence of items. It is used to repeat a block of code a certain number of times. For example, you can use a for loop to iterate over a list of numbers and print each number to the console.",
-#     "while": "A while loop is a loop that allows you to repeat a block of code as long as a certain condition is true. It is used to repeat a block of code until a condition is met. For example, you can use a while loop to repeat a block of code until a user enters a specific input.",
-#     "if": "An if statement is a conditional statement that allows you to execute a block of code only if a certain condition is true. It is used to make decisions in your code. For example, you can use an if statement to check if a number is greater than 10 and print a message to the console if it is.",
-#     "else": "An else statement is used in conjunction with an if statement to execute a block of code if the if condition is false. It is used to provide an alternative block of code to execute when the if condition is not met. For example, you can use an else statement to print a message to the console if a number is not greater than 10.",
-#     "switch": "A switch statement is a conditional statement that allows you to execute different blocks of code based on the value of a variable. It is used to make decisions in your code with multiple possible outcomes. For example, you can use a switch statement to check the value of a variable and execute different blocks of code based on the value.",
-#     "break": "A break statement is used to exit a loop or switch statement. It is used to terminate the execution of a loop or switch statement and continue with the next statement in the program. For example, you can use a break statement to exit a loop when a certain condition is met.",
-#     "continue": "A continue statement is used to skip the current iteration of a loop and continue with the next iteration. It is used to skip over certain iterations of a loop based on a condition. For example, you can use a continue statement to skip over even numbers in a loop and only process odd numbers.",
-#     "return": "A return statement is used to exit a function and return a value to the caller. It is used to pass a value back to the caller of a function. For example, you can use a return statement to return the result of a calculation from a function to the main program.",
-
-# }
-
+# Initialize matchers 
 matcher = Matcher(nlp.vocab)
+phraseMatcher = PhraseMatcher(nlp.vocab, attr="LOWER")
+
+# Dictionary of responses for the chatbot
 response_dict = {
     # general responses
     "greet": "Hello! How can I help you today?",
@@ -59,54 +45,20 @@ response_dict = {
     "throw": "Throw is used to explicitly throw an exception.", # java res 25
 }
 
-def get_response(user_input):
-    doc = nlp(user_input) # Tokenize the user input   
-    best_match = "default" # Default response initally for best match 
-    matches = matcher(doc) # Find matches in the user input
-    
-    # get the best match
-    for mID, start, end in matches:
-        match_id_str = nlp.vocab[mID].text
-        if match_id_str in response_dict:
-            best_match = match_id_str
-        else:
-            best_match = "default"
-
-    return response_dict[best_match] # Return the response with the best match
-
-def chat():
-    print("Chatbot: Hello! (Type 'bye' to exit.)")
-    while True:
-        user_input = input("You: ")
-        # print("User:", user_input)wha
-        if user_input.lower() == "bye":
-            print("Chatbot: Goodbye! Have a great day!")
-            break
-        else:
-            response = get_response(user_input)
-            print("Chatbot:", response)
-# Create pattern for matching 
-# keyword_patterns = { 
-    
-#     "for": [{"LOWER": "for"},],
-#     "while": [{"LOWER": "while"},],
-#     "if": [{"LOWER": "if"},],
-#     "else": [{"LOWER": "else"},],
-#     "switch": [{"LOWER": {"FUZZY":"switch"}},],
-#     "break": [{"LOWER": {"FUZZY":"break"}},],throws
-#     "continue": [{"LOWER": {"FUZZY":"continue"}},],
-#     "return": [{"LOWER": "return"},],
-# }
-
+#### KEYWORD PATTERNS ####  
+# Create keytword patterns for matching 
 keyword_patterns = {
+    "greet": [{"LOWER": {"FUZZY":"greet"}}],
+    "help": [{"LOWER": {"FUZZY":"help"}}],
     "for": [{"LOWER": "for"}],
     "while": [{"LOWER": "while"}],
+    "for": [{"LOWER": "for"}],
     "if": [{"LOWER": "if"}],
     "else": [{"LOWER": "else"}],
-    "switch": [{"LOWER": "switch"}],
+    "switch": [{"LOWER": {"FUZZY":"switch"}}],
     "case": [{"LOWER": "case"}],
-    "break": [{"LOWER": "break"}],
-    "continue": [{"LOWER": "continue"}],
+    "break": [{"LOWER": {"FUZZY":"break"}}],
+    "continue": [{"LOWER": {"FUZZY":"continue"}}],
     "return": [{"LOWER": "return"}],
     "public": [{"LOWER": "public"}],
     "private": [{"LOWER": "private"}],
@@ -126,26 +78,155 @@ keyword_patterns = {
     "throw": [{"LOWER": "throw"}]
 }
 
-
-# Add the patterns to the matcher
+# Add the keyword patterns to the matcher
 for key, pattern in keyword_patterns.items():
     matcher.add(key, [pattern]) # must be a list of the pattern for keyword
 
+#### PHRASE PATTERNS ####
+# Create phrase patterns for matching
+phrase_patterns = {
+    "greet": ["hello", "hi", "hey", "howdy", "greetings"],
+    "help": ["help", "help me", "can you help", "need assistance"],
+    "for": ["for", "for loop", "for statement", "for keyword"],
+    "while": ["while", "while loop", "while statement", "while keyword"],
+    "if": ["if", "if statement", "if condition", "if keyword"],
+    "else": ["else", "else statement", "else keyword", "else condition"],
+    "switch": ["switch", "switch statement", "switch case", "switch keyword"],
+    "case": ["case", "case statement", "case label", "case keyword"],
+    "break": ["break", "break statement", "break keyword"],
+    "continue": ["continue", "continue statement", "continue keyword"],
+    "return": ["return", "return statement", "return keyword"],
+    "public": ["public", "public keyword", "public modifier", "public access"],
+    "private": ["private", "private keyword", "private modifier", "private access"],
+    "protected": ["protected", "protected keyword", "protected modifier", "protected access"],
+    "static": ["static", "static keyword", "static modifier"],
+    "final": ["final", "final keyword", "final modifier"],
+    "abstract": ["abstract", "abstract keyword", "abstract class", "abstract method"],
+    "interface": ["interface", "interface keyword", "interface definition"],
+    "extends": ["extends", "extends keyword", "extends relationship"],
+    "implements": ["implements", "implements keyword", "implements interface", "implement"],
+    "instanceof": ["instanceof", "instanceof operator", "instanceof keyword"],
+    "super": ["super", "super keyword", "super reference"],
+    "this": ["this", "this keyword", "this reference", "this object"],
+    "try": ["try", "try block", "try statement", "try keyword"],
+    "catch": ["catch", "catch block", "catch statement", "catch keyword"],
+    "finally": ["finally", "finally block", "finally statement", "finally keyword"],
+    "throw": ["throw", "throw statement", "throw exception", "throw keyword"]
+}
 
+# add the phrase patterns to the phrase matcher
+for key, phrases in phrase_patterns.items():
+   patterns = [nlp(term) for term in phrases]
+   phraseMatcher.add(key,[*patterns]) # must be a list of the pattern for keyword
+ 
+#### FUNCTIONS #### 
+
+# Function to take user input and return best response for keyword patterns.
+def get_response_keyword(user_input):
+    doc = nlp(user_input) # Tokenize the user input   
+    best_match = "default" # Default response initally for best match 
+    
+    # Find matches
+    keyword_matches = matcher(doc) # Find keyword matches in the user input
+
+    # Get matches 
+    matches = []
+    # Get the start and end index of the matched keyword
+    for mID, start, end in keyword_matches:
+        matches.append(mID)
+
+    # Get the best match
+    for mID in matches:
+        #match_id_str = nlp.vocab[mID].text
+        match_id_str = nlp.vocab.strings[mID]
+        if match_id_str in response_dict:
+            best_match = match_id_str
+        else:
+            best_match = "default"
+
+    return response_dict[best_match] # Return the response with the best match
+
+# Function to take user input and return best response for phrase patterns. 
+def get_response_phrase(user_input):
+    doc = nlp(user_input) # Tokenize the user input   
+    best_match = "default" # Default response initally for best match 
+    
+    # Find matches
+    phrase_matches = phraseMatcher(doc) # Find phrase matches in the user input
+
+    # Get matches
+    matches = []    
+    # Get the start and end index of the matched phrase
+    for mID, start, end in phrase_matches:
+        matches.insert(0, mID)
+
+    # Get the best match
+    for mID in matches:
+        match_id_str = nlp.vocab.strings[mID]
+        if match_id_str in response_dict:
+            best_match = match_id_str
+        else:
+            best_match = "default"
+
+    return response_dict[best_match] # Return the response with the best match
+
+# Function to take user input and return best response for phrase patterns with similarity score.
+def get_response_phrase(user_input):
+    doc = nlp(user_input) # Tokenize the user input   
+    best_match = "default" # Default response initally for best match 
+    
+    # Find matches
+    phrase_matches = phraseMatcher(doc) # Find phrase matches in the user input
+
+    # Get matches
+    matches = []    
+    # Get the start and end index of the matched phrase
+    for mID, start, end in phrase_matches:
+        matches.insert(0, mID)
+
+    # Get the best match
+    for mID in matches:
+        match_id_str = nlp.vocab.strings[mID]
+
+        # Set best match 
+        if match_id_str in response_dict:
+            best_match = match_id_str
+        else:
+            best_match = "default"
+
+    return response_dict[best_match] # Return the response with the best match
+
+# Function for general terminal chatbot
+def chat():
+
+    try: 
+        print("Chatbot: Hello! (Type 'bye' to exit.)")
+        while True:
+            user_input = input("You: ")
+            if user_input.lower() == "bye":
+                print("Chatbot: " + response_dict["bye"])
+                break
+            else:
+                #response = get_response_keyword(user_input)
+                response = get_response_phrase(user_input) # Phrase works way better than keyword
+                print("Chatbot:", response)
+   
+    except Exception as e:
+        print("Error:", e)
+
+# Function for testing general chatbot functionality 
 def generate_sample():
     with open("chatbot_samples.txt", "w") as f:
         for keyword in response_dict.keys():
             user_input = f"What is {keyword} in Java?"
-            response = get_response(user_input)
+            response = get_response_phrase(user_input)
             f.write(f"User: {user_input}\n")
             f.write(f"Chatbot: {response}\n\n")
-generate_sample()
 
 
-chat()
+#### MAIN METHOD #### 
+if __name__ == "__main__":
 
-
-
-
-
+    #generate_sample()
+    chat()
 
