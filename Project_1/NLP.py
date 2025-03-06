@@ -226,26 +226,26 @@ def generate_sample():
         f.write(f"User: {user_input}\n")
         f.write(f"Chatbot: {response}\n\n")
 
-        #user asks for help (generic)
+        # user asks for help (generic)
         user_input = f"Help me please"
         response = get_response_phrase(user_input)
         f.write(f"User: {user_input}\n")
         f.write(f"Chatbot: {response}\n\n")
 
-        #user asks for specific keywords
+        # user asks for specific keywords
         for keyword in list(response_dict.keys())[4:]:  # Skip the first 4 items
             user_input = f"What is {keyword} in Java?"
             response = get_response_phrase(user_input)
             f.write(f"User: {user_input}\n")
             f.write(f"Chatbot: {response}\n\n")
 
-        #user says random thing to trigger default unknowmn
+        # user says random thing to trigger default unknowmn
         user_input = f"what is icecream in java"
         response = get_response_phrase(user_input)
         f.write(f"User: {user_input}\n")
         f.write(f"Chatbot: {response}\n\n")
 
-        #user says bye
+        # user says bye
         user_input = f"bye"
         response = get_response_phrase(user_input)
         f.write(f"User: {user_input}\n")
@@ -255,6 +255,6 @@ def generate_sample():
 
 #### MAIN METHOD #### 
 if __name__ == "__main__":
-    is_generate_sample = False
+    is_generate_sample = False # Flag for running chatbot with sample creation
     chat(is_generate_sample)
 
