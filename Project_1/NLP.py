@@ -1,4 +1,6 @@
-#Qian Yi Wang 40211303 - putyournameandidhere
+# Qian Yi Wang 40211303
+# Lawrence Fasold 40207808
+
 import spacy
 from spacy.matcher import PhraseMatcher, Matcher
 
