@@ -1,6 +1,6 @@
+#Qian Yi Wang 40211303 - putyournameandidhere
 import spacy
 from spacy.matcher import PhraseMatcher, Matcher
-
 
 #### INITIALIZATION ####
 # Load the model 
@@ -50,6 +50,7 @@ response_dict = {
 keyword_patterns = {
     "greet": [{"LOWER": {"FUZZY":"greet"}}],
     "help": [{"LOWER": {"FUZZY":"help"}}],
+    "bye": [{"LOWER": {"FUZZY":"bye"}}],
     "for": [{"LOWER": "for"}],
     "while": [{"LOWER": "while"}],
     "for": [{"LOWER": "for"}],
@@ -87,6 +88,7 @@ for key, pattern in keyword_patterns.items():
 phrase_patterns = {
     "greet": ["hello", "hi", "hey", "howdy", "greetings"],
     "help": ["help", "help me", "can you help", "need assistance"],
+    "bye": ["goodbye", "bye", "see you later", "see you soon"],
     "for": ["for", "for loop", "for statement", "for keyword"],
     "while": ["while", "while loop", "while statement", "while keyword"],
     "if": ["if", "if statement", "if condition", "if keyword"],
@@ -197,36 +199,62 @@ def get_response_phrase(user_input):
     return response_dict[best_match] # Return the response with the best match
 
 # Function for general terminal chatbot
-def chat():
-
-    try: 
-        print("Chatbot: Hello! (Type 'bye' to exit.)")
-        while True:
-            user_input = input("You: ")
-            if user_input.lower() == "bye":
-                print("Chatbot: " + response_dict["bye"])
-                break
-            else:
-                #response = get_response_keyword(user_input)
-                response = get_response_phrase(user_input) # Phrase works way better than keyword
-                print("Chatbot:", response)
-   
-    except Exception as e:
-        print("Error:", e)
+def chat(is_generate_sample):
+    if is_generate_sample:
+        generate_sample()
+    else:
+        try: 
+            print("Chatbot: Hello! (Type 'bye' to exit.)")
+            while True:
+                user_input = input("You: ")
+                if user_input.lower() == "bye":
+                    print("Chatbot: " + response_dict["bye"])
+                    break
+                else:
+                    response = get_response_phrase(user_input) # Phrase works way better than keyword
+                    print("Chatbot:", response)
+    
+        except Exception as e:
+            print("Error:", e)
 
 # Function for testing general chatbot functionality 
 def generate_sample():
     with open("chatbot_samples.txt", "w") as f:
-        for keyword in response_dict.keys():
+        # user says hi
+        user_input = f"Hello how are you"
+        response = get_response_phrase(user_input)
+        f.write(f"User: {user_input}\n")
+        f.write(f"Chatbot: {response}\n\n")
+
+        #user asks for help (generic)
+        user_input = f"Help me please"
+        response = get_response_phrase(user_input)
+        f.write(f"User: {user_input}\n")
+        f.write(f"Chatbot: {response}\n\n")
+
+        #user asks for specific keywords
+        for keyword in list(response_dict.keys())[4:]:  # Skip the first 4 items
             user_input = f"What is {keyword} in Java?"
             response = get_response_phrase(user_input)
             f.write(f"User: {user_input}\n")
             f.write(f"Chatbot: {response}\n\n")
 
+        #user says random thing to trigger default unknowmn
+        user_input = f"what is icecream in java"
+        response = get_response_phrase(user_input)
+        f.write(f"User: {user_input}\n")
+        f.write(f"Chatbot: {response}\n\n")
+
+        #user says bye
+        user_input = f"bye"
+        response = get_response_phrase(user_input)
+        f.write(f"User: {user_input}\n")
+        f.write(f"Chatbot: {response}\n\n")
+
+
 
 #### MAIN METHOD #### 
 if __name__ == "__main__":
-
-    #generate_sample()
-    chat()
+    is_generate_sample = False
+    chat(is_generate_sample)
 

@@ -1,14 +1,8 @@
-User: What is greet in Java?
-Chatbot: I'm sorry, I didn't understand that. Could you rephrase?
+User: Hello how are you
+Chatbot: Hello! How can I help you today?
 
-User: What is bye in Java?
-Chatbot: I'm sorry, I didn't understand that. Could you rephrase?
-
-User: What is help in Java?
-Chatbot: I'm sorry, I didn't understand that. Could you rephrase?
-
-User: What is default in Java?
-Chatbot: I'm sorry, I didn't understand that. Could you rephrase?
+User: Help me please
+Chatbot: I can answer your questions. Try asking about something more specific!
 
 User: What is for in Java?
 Chatbot: A for loop is a control flow statement for specifying iteration. It allows code to be executed repeatedly.
@@ -84,4 +78,10 @@ Chatbot: Finally defines a block of code that is always executed after a try-cat
 
 User: What is throw in Java?
 Chatbot: Throw is used to explicitly throw an exception.
+
+User: what is icecream in java
+Chatbot: I'm sorry, I didn't understand that. Could you rephrase?
+
+User: bye
+Chatbot: Goodbye! Have a great day!
 
