@@ -1,3 +1,6 @@
+### Qian Yi Wang 40211303
+### Lawrence Fasold 40207808
+
 # **Installation**
 For installations, it is general best practice to create a virtual environmnet so to not have conflicting dependencies. 
 
