@@ -1,4 +1,5 @@
 env/
+venv/
 llm_outputs/
 
 *.json
