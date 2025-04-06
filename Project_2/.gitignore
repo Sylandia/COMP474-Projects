@@ -2,4 +2,4 @@ env/
 .venv/
 venv/
 llm_outputs/
-*conversatoin_history.json
+*conversation_history.json
